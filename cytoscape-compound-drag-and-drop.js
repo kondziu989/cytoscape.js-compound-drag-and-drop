@@ -299,98 +299,117 @@ var addListeners = function addListeners() {
       return;
     }
 
-    // if( this.dropTarget.nonempty() ){ // already in a parent
-    //   const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
-    //   const parent = this.dropTarget;
-    //   const sibling = this.dropSibling;
-    //   const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
-    //   // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
-    //
-    //
-    //   if( rmFromParent ){
-    //     removeParent(this.grabbedNode);
-    //     removeParent(this.dropSibling);
-    //
-    //     this.dropTarget.removeClass('cdnd-drop-target');
-    //     this.dropSibling.removeClass('cdnd-drop-sibling');
-    //
-    //     // if(
-    //     //   this.dropSibling.nonempty() // remove extension-created parents on out
-    //     //   || grabbedIsOnlyChild // remove empty parents
-    //     // ){
-    //     //   this.dropTarget.remove();
-    //     // }
-    //
-    //     this.dropTarget = cy.collection();
-    //     this.dropSibling = cy.collection();
-    //     this.dropTargetBounds = null;
-    //
-    //     updateBoundsTuples();
-    //
-    //     this.grabbedNode.emit('cdndout', [parent, sibling]);
-    //   }
-    // } else { // not in a parent
+    if (_this.dropTarget.nonempty()) {
+      // already in a parent
+      var bb = expandBounds(getBounds(_this.grabbedNode), options.outThreshold);
+      var parent = _this.dropTarget;
+      var sibling = _this.dropSibling;
+      var rmFromParent = !boundsOverlap(_this.dropTargetBounds, bb);
+      // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
 
-    var wasEmpty = !_this.dropTarget.nonempty();
-    var parent = void 0,
-        sibling = void 0;
 
-    if (!wasEmpty) {
-      parent = _this.dropTarget;
+      if (rmFromParent) {
+        removeParent(_this.grabbedNode);
+        removeParent(_this.dropSibling);
+
+        _this.dropTarget.removeClass('cdnd-drop-target');
+        _this.dropSibling.removeClass('cdnd-drop-sibling');
+
+        // if(
+        //   this.dropSibling.nonempty() // remove extension-created parents on out
+        //   || grabbedIsOnlyChild // remove empty parents
+        // ){
+        //   this.dropTarget.remove();
+        // }
+
+        _this.dropTarget = cy.collection();
+        _this.dropSibling = cy.collection();
+        _this.dropTargetBounds = null;
+
+        updateBoundsTuples();
+
+        _this.grabbedNode.emit('cdndout', [parent, sibling]);
+      }
+
+      var tupleOverlaps = function tupleOverlaps(t) {
+        return !t.node.removed() && boundsOverlap(bb, t.bb) && !t.same(_this.grabbedNode);
+      };
+      var overlappingNodes = _this.boundsTuples.filter(tupleOverlaps).map(function (t) {
+        return t.node;
+      });
+
+      if (overlappingNodes.length > 0) {
+        // potential parent
+        // const overlappingParents = overlappingNodes.filter(isParent);
+        var _parent = void 0,
+            _sibling = void 0;
+
+        _sibling = cy.collection();
+        _parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+
+        _parent.addClass('cdnd-drop-target parent');
+        _sibling.addClass('cdnd-drop-sibling');
+
+        setParent(_sibling, _parent);
+
+        _this.dropTargetBounds = getBoundsCopy(_parent);
+
+        setParent(_this.grabbedNode, _parent);
+
+        _this.dropTarget = _parent;
+        _this.dropSibling = _sibling;
+
+        _this.grabbedNode.emit('cdndover', [_parent, _sibling]);
+      }
+    } else {
+      // not in a parent
+
+
+      var _bb = expandBounds(getBounds(_this.grabbedNode), options.overThreshold);
+      var _tupleOverlaps = function _tupleOverlaps(t) {
+        return !t.node.removed() && boundsOverlap(_bb, t.bb);
+      };
+      var _overlappingNodes = _this.boundsTuples.filter(_tupleOverlaps).map(function (t) {
+        return t.node;
+      });
+
+      // if( overlappingNodes.length > 0 ){ // potential parent
+      //   // const overlappingParents = overlappingNodes.filter(isParent);
+      //   const overlappingParents = overlappingNodes.filter(isParent);
+      //   let parent, sibling;
+      //
+      //   if( overlappingParents.length > 0 ){
+      //     sibling = cy.collection();
+      //     parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
+      //   } else {
+      //     sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+      //     parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
+      //   }
+
+      if (_overlappingNodes.length > 0) {
+        // potential parent
+        // const overlappingParents = overlappingNodes.filter(isParent);
+        var _parent2 = void 0,
+            _sibling2 = void 0;
+
+        _sibling2 = cy.collection();
+        _parent2 = _overlappingNodes[0]; // TODO maybe use a metric here to select which one
+
+        _parent2.addClass('cdnd-drop-target parent');
+        _sibling2.addClass('cdnd-drop-sibling');
+
+        setParent(_sibling2, _parent2);
+
+        _this.dropTargetBounds = getBoundsCopy(_parent2);
+
+        setParent(_this.grabbedNode, _parent2);
+
+        _this.dropTarget = _parent2;
+        _this.dropSibling = _sibling2;
+
+        _this.grabbedNode.emit('cdndover', [_parent2, _sibling2]);
+      }
     }
-    var rmFromParent = wasEmpty && !boundsOverlap(_this.dropTargetBounds, bb);
-
-    if (rmFromParent) {
-      removeParent(_this.grabbedNode);
-      _this.grabbedNode.emit('cdndout', [parent]);
-      _this.dropTarget.removeClass('cdnd-drop-target');
-      updateBoundsTuples();
-    }
-
-    var bb = expandBounds(getBounds(_this.grabbedNode), options.overThreshold);
-    var tupleOverlaps = function tupleOverlaps(t) {
-      return !t.node.removed() && boundsOverlap(bb, t.bb);
-    };
-    var overlappingNodes = _this.boundsTuples.filter(tupleOverlaps).map(function (t) {
-      return t.node;
-    });
-
-    // if( overlappingNodes.length > 0 ){ // potential parent
-    //   // const overlappingParents = overlappingNodes.filter(isParent);
-    //   const overlappingParents = overlappingNodes.filter(isParent);
-    //   let parent, sibling;
-    //
-    //   if( overlappingParents.length > 0 ){
-    //     sibling = cy.collection();
-    //     parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
-    //   } else {
-    //     sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
-    //     parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
-    //   }
-
-    if (overlappingNodes.length > 0) {
-      // potential parent
-      // const overlappingParents = overlappingNodes.filter(isParent);
-
-      sibling = cy.collection();
-      parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
-
-      parent.addClass('cdnd-drop-target parent');
-      sibling.addClass('cdnd-drop-sibling');
-
-      setParent(sibling, parent);
-
-      _this.dropTargetBounds = getBoundsCopy(parent);
-
-      setParent(_this.grabbedNode, parent);
-
-      _this.dropTarget = parent;
-      _this.dropSibling = sibling;
-
-      _this.grabbedNode.emit('cdndover', [parent, sibling]);
-    }
-
-    // }
   });
 
   this.addListener('free', 'node', function () {

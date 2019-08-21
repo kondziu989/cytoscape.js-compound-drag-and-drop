@@ -95,52 +95,63 @@ const addListeners = function(){
   this.addListener('drag', 'node', () => {
     if( !this.inGesture || !this.enabled ){ return; }
 
-    // if( this.dropTarget.nonempty() ){ // already in a parent
-    //   const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
-    //   const parent = this.dropTarget;
-    //   const sibling = this.dropSibling;
-    //   const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
-    //   // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
-    //
-    //
-    //   if( rmFromParent ){
-    //     removeParent(this.grabbedNode);
-    //     removeParent(this.dropSibling);
-    //
-    //     this.dropTarget.removeClass('cdnd-drop-target');
-    //     this.dropSibling.removeClass('cdnd-drop-sibling');
-    //
-    //     // if(
-    //     //   this.dropSibling.nonempty() // remove extension-created parents on out
-    //     //   || grabbedIsOnlyChild // remove empty parents
-    //     // ){
-    //     //   this.dropTarget.remove();
-    //     // }
-    //
-    //     this.dropTarget = cy.collection();
-    //     this.dropSibling = cy.collection();
-    //     this.dropTargetBounds = null;
-    //
-    //     updateBoundsTuples();
-    //
-    //     this.grabbedNode.emit('cdndout', [parent, sibling]);
-    //   }
-    // } else { // not in a parent
+    if( this.dropTarget.nonempty() ){ // already in a parent
+      const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
+      const parent = this.dropTarget;
+      const sibling = this.dropSibling;
+      const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
+      // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
 
-    const wasEmpty = !this.dropTarget.nonempty();
-    let parent, sibling;
 
-    if(!wasEmpty){
-      parent = this.dropTarget;
-    }
-    const rmFromParent = wasEmpty && !boundsOverlap(this.dropTargetBounds, bb);
+      if( rmFromParent ){
+        removeParent(this.grabbedNode);
+        removeParent(this.dropSibling);
 
-    if(rmFromParent){
-      removeParent(this.grabbedNode)
-      this.grabbedNode.emit('cdndout', [parent]);
-      this.dropTarget.removeClass('cdnd-drop-target');
-      updateBoundsTuples();
-    }
+        this.dropTarget.removeClass('cdnd-drop-target');
+        this.dropSibling.removeClass('cdnd-drop-sibling');
+
+        // if(
+        //   this.dropSibling.nonempty() // remove extension-created parents on out
+        //   || grabbedIsOnlyChild // remove empty parents
+        // ){
+        //   this.dropTarget.remove();
+        // }
+
+        this.dropTarget = cy.collection();
+        this.dropSibling = cy.collection();
+        this.dropTargetBounds = null;
+
+        updateBoundsTuples();
+
+        this.grabbedNode.emit('cdndout', [parent, sibling]);
+      }
+
+      const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb) && !t.same(this.grabbedNode);
+      const overlappingNodes = this.boundsTuples.filter(tupleOverlaps).map(t => t.node);
+
+      if( overlappingNodes.length > 0 ) { // potential parent
+        // const overlappingParents = overlappingNodes.filter(isParent);
+        let parent, sibling;
+
+        sibling = cy.collection();
+        parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+
+        parent.addClass('cdnd-drop-target parent');
+        sibling.addClass('cdnd-drop-sibling');
+
+        setParent(sibling, parent);
+
+        this.dropTargetBounds = getBoundsCopy(parent);
+
+        setParent(this.grabbedNode, parent);
+
+        this.dropTarget = parent;
+        this.dropSibling = sibling;
+
+        this.grabbedNode.emit('cdndover', [parent, sibling]);
+      }
+    } else { // not in a parent
+
 
       const bb = expandBounds( getBounds(this.grabbedNode), options.overThreshold );
       const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb);
@@ -161,6 +172,7 @@ const addListeners = function(){
 
         if( overlappingNodes.length > 0 ){ // potential parent
         // const overlappingParents = overlappingNodes.filter(isParent);
+        let parent, sibling;
 
           sibling = cy.collection();
           parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
@@ -180,7 +192,7 @@ const addListeners = function(){
         this.grabbedNode.emit('cdndover', [parent, sibling]);
       }
 
-    // }
+    }
   });
 
   this.addListener('free', 'node', () => {
