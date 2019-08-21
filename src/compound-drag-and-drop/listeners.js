@@ -129,19 +129,27 @@ const addListeners = function(){
       const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb);
       const overlappingNodes = this.boundsTuples.filter(tupleOverlaps).map(t => t.node);
 
-      if( overlappingNodes.length > 0 ){ // potential parent
-        const overlappingParents = overlappingNodes.filter(isParent);
+      // if( overlappingNodes.length > 0 ){ // potential parent
+      //   // const overlappingParents = overlappingNodes.filter(isParent);
+      //   const overlappingParents = overlappingNodes.filter(isParent);
+      //   let parent, sibling;
+      //
+      //   if( overlappingParents.length > 0 ){
+      //     sibling = cy.collection();
+      //     parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
+      //   } else {
+      //     sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+      //     parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
+      //   }
+
+        if( overlappingNodes.length > 0 ){ // potential parent
+        // const overlappingParents = overlappingNodes.filter(isParent);
         let parent, sibling;
 
-        if( overlappingParents.length > 0 ){
           sibling = cy.collection();
-          parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
-        } else {
-          sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
-          parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
-        }
+          parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
 
-        parent.addClass('cdnd-drop-target');
+        parent.addClass('cdnd-drop-target parent');
         sibling.addClass('cdnd-drop-sibling');
 
         setParent(sibling, parent);

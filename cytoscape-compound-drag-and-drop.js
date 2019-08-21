@@ -339,21 +339,29 @@ var addListeners = function addListeners() {
         return t.node;
       });
 
+      // if( overlappingNodes.length > 0 ){ // potential parent
+      //   // const overlappingParents = overlappingNodes.filter(isParent);
+      //   const overlappingParents = overlappingNodes.filter(isParent);
+      //   let parent, sibling;
+      //
+      //   if( overlappingParents.length > 0 ){
+      //     sibling = cy.collection();
+      //     parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
+      //   } else {
+      //     sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+      //     parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
+      //   }
+
       if (overlappingNodes.length > 0) {
         // potential parent
-        var overlappingParents = overlappingNodes.filter(isParent);
+        // const overlappingParents = overlappingNodes.filter(isParent);
         var _parent = void 0,
             _sibling = void 0;
 
-        if (overlappingParents.length > 0) {
-          _sibling = cy.collection();
-          _parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
-        } else {
-          _sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
-          _parent = cy.add(options.newParentNode(_this.grabbedNode, _sibling));
-        }
+        _sibling = cy.collection();
+        _parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
 
-        _parent.addClass('cdnd-drop-target');
+        _parent.addClass('cdnd-drop-target parent');
         _sibling.addClass('cdnd-drop-sibling');
 
         setParent(_sibling, _parent);
