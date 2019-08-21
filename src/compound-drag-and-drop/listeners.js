@@ -102,6 +102,7 @@ const addListeners = function(){
     //   const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
     //   // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
     //
+    //
     //   if( rmFromParent ){
     //     removeParent(this.grabbedNode);
     //     removeParent(this.dropSibling);
@@ -126,6 +127,20 @@ const addListeners = function(){
     //   }
     // } else { // not in a parent
 
+    const wasEmpty = !this.dropTarget.nonempty();
+    let parent, sibling;
+
+    if(!wasEmpty){
+      parent = this.dropTarget;
+    }
+    const rmFromParent = wasEmpty && !boundsOverlap(this.dropTargetBounds, bb);
+
+    if(rmFromParent){
+      removeParent(this.grabbedNode)
+      this.grabbedNode.emit('cdndout', [parent]);
+      this.dropTarget.removeClass('cdnd-drop-target');
+      updateBoundsTuples();
+    }
 
       const bb = expandBounds( getBounds(this.grabbedNode), options.overThreshold );
       const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb);
@@ -146,7 +161,6 @@ const addListeners = function(){
 
         if( overlappingNodes.length > 0 ){ // potential parent
         // const overlappingParents = overlappingNodes.filter(isParent);
-        let parent, sibling;
 
           sibling = cy.collection();
           parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
@@ -166,6 +180,7 @@ const addListeners = function(){
         this.grabbedNode.emit('cdndover', [parent, sibling]);
       }
 
+    // }
   });
 
   this.addListener('free', 'node', () => {

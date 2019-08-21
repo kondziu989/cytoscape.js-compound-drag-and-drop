@@ -306,6 +306,7 @@ var addListeners = function addListeners() {
     //   const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
     //   // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
     //
+    //
     //   if( rmFromParent ){
     //     removeParent(this.grabbedNode);
     //     removeParent(this.dropSibling);
@@ -330,6 +331,21 @@ var addListeners = function addListeners() {
     //   }
     // } else { // not in a parent
 
+    var wasEmpty = !_this.dropTarget.nonempty();
+    var parent = void 0,
+        sibling = void 0;
+
+    if (!wasEmpty) {
+      parent = _this.dropTarget;
+    }
+    var rmFromParent = wasEmpty && !boundsOverlap(_this.dropTargetBounds, bb);
+
+    if (rmFromParent) {
+      removeParent(_this.grabbedNode);
+      _this.grabbedNode.emit('cdndout', [parent]);
+      _this.dropTarget.removeClass('cdnd-drop-target');
+      updateBoundsTuples();
+    }
 
     var bb = expandBounds(getBounds(_this.grabbedNode), options.overThreshold);
     var tupleOverlaps = function tupleOverlaps(t) {
@@ -355,8 +371,6 @@ var addListeners = function addListeners() {
     if (overlappingNodes.length > 0) {
       // potential parent
       // const overlappingParents = overlappingNodes.filter(isParent);
-      var parent = void 0,
-          sibling = void 0;
 
       sibling = cy.collection();
       parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
@@ -375,6 +389,8 @@ var addListeners = function addListeners() {
 
       _this.grabbedNode.emit('cdndover', [parent, sibling]);
     }
+
+    // }
   });
 
   this.addListener('free', 'node', function () {
