@@ -332,7 +332,7 @@ var addListeners = function addListeners() {
       }
 
       var tupleOverlaps = function tupleOverlaps(t) {
-        return !t.node.removed() && boundsOverlap(bb, t.bb) && !t.same(_this.grabbedNode);
+        return !t.node.removed() && boundsOverlap(bb, t.bb) && isChild(t);
       };
       var overlappingNodes = _this.boundsTuples.filter(tupleOverlaps).map(function (t) {
         return t.node;

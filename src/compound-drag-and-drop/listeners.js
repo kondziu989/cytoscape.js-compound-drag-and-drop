@@ -126,7 +126,7 @@ const addListeners = function(){
         this.grabbedNode.emit('cdndout', [parent, sibling]);
       }
 
-      const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb) && !t.same(this.grabbedNode);
+      const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb) && isChild(t);
       const overlappingNodes = this.boundsTuples.filter(tupleOverlaps).map(t => t.node);
 
       if( overlappingNodes.length > 0 ) { // potential parent
