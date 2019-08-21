@@ -179,7 +179,8 @@ var _require = __webpack_require__(5),
     expandBounds = _require.expandBounds,
     getBoundsCopy = _require.getBoundsCopy,
     setParent = _require.setParent,
-    removeParent = _require.removeParent;
+    removeParent = _require.removeParent,
+    isParentOf = _require.isParentOf;
 
 var addListener = function addListener(event, selector, callback) {
   this.listeners.push({ event: event, selector: selector, callback: callback });
@@ -205,10 +206,10 @@ var addListeners = function addListeners() {
     return !isMultiplySelected(n) && options.grabbedNode(n);
   };
   var canBeDropTarget = function canBeDropTarget(n) {
-    return !n.same(_this.grabbedNode) && options.dropTarget(n);
+    return !n.same(_this.grabbedNode) && options.dropTarget(n) && !isParentOf(_this.grabbedNode, n);
   };
   var canBeDropSibling = function canBeDropSibling(n) {
-    return isChild(n) && !n.same(_this.grabbedNode) && options.dropSibling(n);
+    return isChild(n) && !n.same(_this.grabbedNode) && !isParentOf(_this.grabbedNode, n) && options.dropSibling(n);
   };
   var canPullFromParent = function canPullFromParent(n) {
     return isChild(n);
@@ -440,6 +441,9 @@ var isChild = function isChild(n) {
 var isOnlyChild = function isOnlyChild(n) {
   return isChild(n) && n.parent().children().length === 1;
 };
+var isParentOf = function isParentOf(parent, child) {
+  return child.parent() === parent;
+};
 
 var getBounds = function getBounds(n) {
   return n.boundingBox({ includeOverlays: false });
@@ -512,7 +516,8 @@ var expandBounds = function expandBounds(bb, padding) {
 module.exports = {
   isParent: isParent, isChild: isChild, isOnlyChild: isOnlyChild,
   getBoundsTuple: getBoundsTuple, boundsOverlap: boundsOverlap, getBounds: getBounds, expandBounds: expandBounds, copyBounds: copyBounds, getBoundsCopy: getBoundsCopy,
-  removeParent: removeParent, setParent: setParent
+  removeParent: removeParent, setParent: setParent,
+  isParentOf: isParentOf
 };
 
 /***/ }),

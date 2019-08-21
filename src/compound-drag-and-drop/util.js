@@ -1,6 +1,7 @@
 const isParent = n => n.isParent();
 const isChild = n => n.isChild();
 const isOnlyChild = n => isChild(n) && n.parent().children().length === 1;
+const isParentOf = (parent, child) => child.parent() === parent;
 
 const getBounds = n => n.boundingBox({ includeOverlays: false });
 const getBoundsTuple = n => ({ node: n, bb: copyBounds(getBounds(n)) });
@@ -45,5 +46,6 @@ const expandBounds = (bb, padding) => {
 module.exports = {
   isParent, isChild, isOnlyChild,
   getBoundsTuple, boundsOverlap, getBounds, expandBounds, copyBounds, getBoundsCopy,
-  removeParent, setParent
+  removeParent, setParent,
+  isParentOf
  };

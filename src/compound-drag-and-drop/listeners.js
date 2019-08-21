@@ -1,7 +1,7 @@
 const {
   isParent, isChild, isOnlyChild,
   getBounds, getBoundsTuple, boundsOverlap, expandBounds, getBoundsCopy,
-  setParent, removeParent
+  setParent, removeParent, isParentOf
 } = require('./util');
 
 const addListener = function(event, selector, callback){
@@ -19,8 +19,8 @@ const addListeners = function(){
 
   const isMultiplySelected = n => n.selected() && cy.elements('node:selected').length > 1;
   const canBeGrabbed = n => !isMultiplySelected(n) && options.grabbedNode(n);
-  const canBeDropTarget = n => !n.same(this.grabbedNode) && options.dropTarget(n);
-  const canBeDropSibling = n => isChild(n) && !n.same(this.grabbedNode) && options.dropSibling(n);
+  const canBeDropTarget = n => !n.same(this.grabbedNode) && options.dropTarget(n) && !isParentOf(this.grabbedNode, n);
+  const canBeDropSibling = n => isChild(n) && !n.same(this.grabbedNode) && !isParentOf(this.grabbedNode, n) && options.dropSibling(n);
   const canPullFromParent = n => isChild(n);
   const canBeInBoundsTuple = n => (canBeDropTarget(n) || canBeDropSibling(n)) && !n.same(this.dropTarget);
   const updateBoundsTuples = () => this.boundsTuples = cy.nodes(canBeInBoundsTuple).map(getBoundsTuple);
