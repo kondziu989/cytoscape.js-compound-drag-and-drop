@@ -95,36 +95,38 @@ const addListeners = function(){
   this.addListener('drag', 'node', () => {
     if( !this.inGesture || !this.enabled ){ return; }
 
-    if( this.dropTarget.nonempty() ){ // already in a parent
-      const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
-      const parent = this.dropTarget;
-      const sibling = this.dropSibling;
-      const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
-      // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
+    // if( this.dropTarget.nonempty() ){ // already in a parent
+    //   const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
+    //   const parent = this.dropTarget;
+    //   const sibling = this.dropSibling;
+    //   const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
+    //   // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
+    //
+    //   if( rmFromParent ){
+    //     removeParent(this.grabbedNode);
+    //     removeParent(this.dropSibling);
+    //
+    //     this.dropTarget.removeClass('cdnd-drop-target');
+    //     this.dropSibling.removeClass('cdnd-drop-sibling');
+    //
+    //     // if(
+    //     //   this.dropSibling.nonempty() // remove extension-created parents on out
+    //     //   || grabbedIsOnlyChild // remove empty parents
+    //     // ){
+    //     //   this.dropTarget.remove();
+    //     // }
+    //
+    //     this.dropTarget = cy.collection();
+    //     this.dropSibling = cy.collection();
+    //     this.dropTargetBounds = null;
+    //
+    //     updateBoundsTuples();
+    //
+    //     this.grabbedNode.emit('cdndout', [parent, sibling]);
+    //   }
+    // } else { // not in a parent
 
-      if( rmFromParent ){
-        removeParent(this.grabbedNode);
-        removeParent(this.dropSibling);
 
-        this.dropTarget.removeClass('cdnd-drop-target');
-        this.dropSibling.removeClass('cdnd-drop-sibling');
-
-        // if(
-        //   this.dropSibling.nonempty() // remove extension-created parents on out
-        //   || grabbedIsOnlyChild // remove empty parents
-        // ){
-        //   this.dropTarget.remove();
-        // }
-
-        this.dropTarget = cy.collection();
-        this.dropSibling = cy.collection();
-        this.dropTargetBounds = null;
-
-        updateBoundsTuples();
-
-        this.grabbedNode.emit('cdndout', [parent, sibling]);
-      }
-    } else { // not in a parent
       const bb = expandBounds( getBounds(this.grabbedNode), options.overThreshold );
       const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb);
       const overlappingNodes = this.boundsTuples.filter(tupleOverlaps).map(t => t.node);
@@ -163,7 +165,7 @@ const addListeners = function(){
 
         this.grabbedNode.emit('cdndover', [parent, sibling]);
       }
-    }
+
   });
 
   this.addListener('free', 'node', () => {
