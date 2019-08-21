@@ -202,10 +202,10 @@ var addListeners = function addListeners() {
     return n.selected() && cy.elements('node:selected').length > 1;
   };
   var canBeGrabbed = function canBeGrabbed(n) {
-    return !isParent(n) && !isMultiplySelected(n) && options.grabbedNode(n);
+    return !isMultiplySelected(n) && options.grabbedNode(n);
   };
   var canBeDropTarget = function canBeDropTarget(n) {
-    return !isChild(n) && !n.same(_this.grabbedNode) && options.dropTarget(n);
+    return !n.same(_this.grabbedNode) && options.dropTarget(n);
   };
   var canBeDropSibling = function canBeDropSibling(n) {
     return isChild(n) && !n.same(_this.grabbedNode) && options.dropSibling(n);
@@ -304,7 +304,7 @@ var addListeners = function addListeners() {
       var parent = _this.dropTarget;
       var sibling = _this.dropSibling;
       var rmFromParent = !boundsOverlap(_this.dropTargetBounds, bb);
-      var grabbedIsOnlyChild = isOnlyChild(_this.grabbedNode);
+      // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
 
       if (rmFromParent) {
         removeParent(_this.grabbedNode);
@@ -313,11 +313,12 @@ var addListeners = function addListeners() {
         _this.dropTarget.removeClass('cdnd-drop-target');
         _this.dropSibling.removeClass('cdnd-drop-sibling');
 
-        if (_this.dropSibling.nonempty() // remove extension-created parents on out
-        || grabbedIsOnlyChild // remove empty parents
-        ) {
-            _this.dropTarget.remove();
-          }
+        // if(
+        //   this.dropSibling.nonempty() // remove extension-created parents on out
+        //   || grabbedIsOnlyChild // remove empty parents
+        // ){
+        //   this.dropTarget.remove();
+        // }
 
         _this.dropTarget = cy.collection();
         _this.dropSibling = cy.collection();
