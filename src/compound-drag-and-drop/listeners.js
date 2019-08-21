@@ -18,8 +18,8 @@ const addListeners = function(){
   const { options, cy } = this;
 
   const isMultiplySelected = n => n.selected() && cy.elements('node:selected').length > 1;
-  const canBeGrabbed = n => !isParent(n) && !isMultiplySelected(n) && options.grabbedNode(n);
-  const canBeDropTarget = n => !isChild(n) && !n.same(this.grabbedNode) && options.dropTarget(n);
+  const canBeGrabbed = n => !isMultiplySelected(n) && options.grabbedNode(n);
+  const canBeDropTarget = n => !n.same(this.grabbedNode) && options.dropTarget(n);
   const canBeDropSibling = n => isChild(n) && !n.same(this.grabbedNode) && options.dropSibling(n);
   const canPullFromParent = n => isChild(n);
   const canBeInBoundsTuple = n => (canBeDropTarget(n) || canBeDropSibling(n)) && !n.same(this.dropTarget);
