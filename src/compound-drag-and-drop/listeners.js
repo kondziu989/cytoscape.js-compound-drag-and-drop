@@ -113,7 +113,7 @@ const addListeners = function(){
           this.dropSibling.nonempty() // remove extension-created parents on out
           || grabbedIsOnlyChild // remove empty parents
         ){
-          // this.dropTarget.remove();
+          this.dropTarget.remove();
         }
 
         this.dropTarget = cy.collection();
