@@ -100,7 +100,7 @@ const addListeners = function(){
       const parent = this.dropTarget;
       const sibling = this.dropSibling;
       const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
-      const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
+      // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
 
       if( rmFromParent ){
         removeParent(this.grabbedNode);
@@ -109,12 +109,12 @@ const addListeners = function(){
         this.dropTarget.removeClass('cdnd-drop-target');
         this.dropSibling.removeClass('cdnd-drop-sibling');
 
-        if(
-          this.dropSibling.nonempty() // remove extension-created parents on out
-          || grabbedIsOnlyChild // remove empty parents
-        ){
-          this.dropTarget.remove();
-        }
+        // if(
+        //   this.dropSibling.nonempty() // remove extension-created parents on out
+        //   || grabbedIsOnlyChild // remove empty parents
+        // ){
+        //   this.dropTarget.remove();
+        // }
 
         this.dropTarget = cy.collection();
         this.dropSibling = cy.collection();
