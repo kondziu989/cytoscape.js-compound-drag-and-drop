@@ -401,6 +401,7 @@ var addListeners = function addListeners() {
 
         _this.dropTargetBounds = getBoundsCopy(_parent);
 
+        _this.grabbedNode.emit('tap');
         setParent(_this.grabbedNode, _parent);
 
         _this.dropTarget = _parent;

@@ -181,10 +181,13 @@ const addListeners = function(){
         parent.addClass('cdnd-drop-target parent');
         sibling.addClass('cdnd-drop-sibling');
 
+
+
         setParent(sibling, parent);
 
         this.dropTargetBounds = getBoundsCopy(parent);
 
+        this.grabbedNode.emit('tap')
         setParent(this.grabbedNode, parent);
 
         this.dropTarget = parent;
