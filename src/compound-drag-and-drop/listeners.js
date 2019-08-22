@@ -174,7 +174,6 @@ const addListeners = function(){
 
         this.dropTargetBounds = getBoundsCopy(parent);
 
-        this.grabbedNode.emit('tap')
         this.grabbedNode.emit('expand')
           setTimeout(() => {
                     updateBoundsTuples();
