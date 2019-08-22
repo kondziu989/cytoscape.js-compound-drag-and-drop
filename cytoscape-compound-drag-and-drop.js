@@ -341,25 +341,24 @@ var addListeners = function addListeners() {
       if (overlappingNodes.length > 0) {
         // potential parent
         // const overlappingParents = overlappingNodes.filter(isParent);
-        var _parent = void 0,
-            _sibling = void 0;
 
-        _sibling = cy.collection();
-        _parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
+        parent.removeClass('cdnd-drop-target');
+        sibling = cy.collection();
+        parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
 
-        _parent.addClass('cdnd-drop-target parent');
-        _sibling.addClass('cdnd-drop-sibling');
+        parent.addClass('cdnd-drop-target parent');
+        sibling.addClass('cdnd-drop-sibling');
 
-        setParent(_sibling, _parent);
+        setParent(sibling, parent);
 
-        _this.dropTargetBounds = getBoundsCopy(_parent);
+        _this.dropTargetBounds = getBoundsCopy(parent);
 
-        setParent(_this.grabbedNode, _parent);
+        setParent(_this.grabbedNode, parent);
 
-        _this.dropTarget = _parent;
-        _this.dropSibling = _sibling;
+        _this.dropTarget = parent;
+        _this.dropSibling = sibling;
 
-        _this.grabbedNode.emit('cdndover', [_parent, _sibling]);
+        _this.grabbedNode.emit('cdndover', [parent, sibling]);
       }
     } else {
       // not in a parent
@@ -389,25 +388,25 @@ var addListeners = function addListeners() {
       if (_overlappingNodes.length > 0) {
         // potential parent
         // const overlappingParents = overlappingNodes.filter(isParent);
-        var _parent2 = void 0,
-            _sibling2 = void 0;
+        var _parent = void 0,
+            _sibling = void 0;
 
-        _sibling2 = cy.collection();
-        _parent2 = _overlappingNodes[0]; // TODO maybe use a metric here to select which one
+        _sibling = cy.collection();
+        _parent = _overlappingNodes[0]; // TODO maybe use a metric here to select which one
 
-        _parent2.addClass('cdnd-drop-target parent');
-        _sibling2.addClass('cdnd-drop-sibling');
+        _parent.addClass('cdnd-drop-target parent');
+        _sibling.addClass('cdnd-drop-sibling');
 
-        setParent(_sibling2, _parent2);
+        setParent(_sibling, _parent);
 
-        _this.dropTargetBounds = getBoundsCopy(_parent2);
+        _this.dropTargetBounds = getBoundsCopy(_parent);
 
-        setParent(_this.grabbedNode, _parent2);
+        setParent(_this.grabbedNode, _parent);
 
-        _this.dropTarget = _parent2;
-        _this.dropSibling = _sibling2;
+        _this.dropTarget = _parent;
+        _this.dropSibling = _sibling;
 
-        _this.grabbedNode.emit('cdndover', [_parent2, _sibling2]);
+        _this.grabbedNode.emit('cdndover', [_parent, _sibling]);
       }
     }
   });
