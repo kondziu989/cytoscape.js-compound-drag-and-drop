@@ -188,7 +188,10 @@ const addListeners = function(){
         this.dropTargetBounds = getBoundsCopy(parent);
 
         this.grabbedNode.emit('tap')
-        setParent(this.grabbedNode, parent);
+        this.grabbedNode.emit('expand')
+          setTimeout(() => {
+                    setParent(this.grabbedNode, parent);
+          }, 1000)
 
         this.dropTarget = parent;
         this.dropSibling = sibling;
