@@ -361,7 +361,7 @@ var addListeners = function addListeners() {
           _this.dropSibling = sibling;
 
           _this.grabbedNode.emit('cdndover', [parent, sibling]);
-        });
+        }, 1000);
       }
     } else {
       // not in a parent

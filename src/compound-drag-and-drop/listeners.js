@@ -152,7 +152,7 @@ const addListeners = function(){
           this.dropSibling = sibling;
 
           this.grabbedNode.emit('cdndover', [parent, sibling]);
-        });
+        }, 1000);
 
       }
     } else { // not in a parent
