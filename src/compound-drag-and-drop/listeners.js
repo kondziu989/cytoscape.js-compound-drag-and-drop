@@ -97,8 +97,8 @@ const addListeners = function(){
 
     if( this.dropTarget.nonempty() ){ // already in a parent
       const bb = expandBounds( getBounds(this.grabbedNode), options.outThreshold );
-      const parent = this.dropTarget;
-      const sibling = this.dropSibling;
+      let parent = this.dropTarget;
+      let sibling = this.dropSibling;
       const rmFromParent = !boundsOverlap(this.dropTargetBounds, bb);
       // const grabbedIsOnlyChild = isOnlyChild(this.grabbedNode);
 
@@ -129,10 +129,11 @@ const addListeners = function(){
       const tupleOverlaps = t => !t.node.removed() && boundsOverlap(bb, t.bb) && isChild(t.node);
       const overlappingNodes = this.boundsTuples.filter(tupleOverlaps).map(t => t.node);
 
+
       if( overlappingNodes.length > 0 ) { // potential parent
         // const overlappingParents = overlappingNodes.filter(isParent);
-        let parent, sibling;
 
+        parent.removeClass('cdnd-drop-target')
         sibling = cy.collection();
         parent = overlappingNodes[0]; // TODO maybe use a metric here to select which one
 
