@@ -44,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/src/compound-drag-and-drop/listeners.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="163" lean-forward="true" selection-start-line="163" selection-end-line="163" />
+              <caret line="144" column="54" lean-forward="true" selection-start-line="144" selection-start-column="54" selection-end-line="145" />
             </state>
           </provider>
         </entry>
@@ -146,12 +146,12 @@
       <workItem from="1566458791371" duration="3104000" />
       <workItem from="1566465442573" duration="3824000" />
       <workItem from="1566475448263" duration="2000" />
-      <workItem from="1566475843794" duration="242000" />
+      <workItem from="1566475843794" duration="505000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21782000" />
+    <option name="totallyTimeSpent" value="22045000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="3832" y="-8" width="1936" height="1056" extended-state="6" />
@@ -238,7 +238,7 @@
     <entry file="file://$PROJECT_DIR$/src/compound-drag-and-drop/listeners.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="163" lean-forward="true" selection-start-line="163" selection-end-line="163" />
+          <caret line="144" column="54" lean-forward="true" selection-start-line="144" selection-start-column="54" selection-end-line="145" />
         </state>
       </provider>
     </entry>

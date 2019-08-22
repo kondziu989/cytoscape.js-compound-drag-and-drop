@@ -144,12 +144,16 @@ const addListeners = function(){
 
         this.dropTargetBounds = getBoundsCopy(parent);
 
-        setParent(this.grabbedNode, parent);
+          setTimeout(() => {
 
-        this.dropTarget = parent;
-        this.dropSibling = sibling;
+          setParent(this.grabbedNode, parent);
 
-        this.grabbedNode.emit('cdndover', [parent, sibling]);
+          this.dropTarget = parent;
+          this.dropSibling = sibling;
+
+          this.grabbedNode.emit('cdndover', [parent, sibling]);
+        });
+
       }
     } else { // not in a parent
 
@@ -175,16 +179,16 @@ const addListeners = function(){
         this.dropTargetBounds = getBoundsCopy(parent);
 
           setTimeout(() => {
-                    parent.emit('expand');
-                    updateBoundsTuples();
-                    if(boundsOverlap(getBounds(this.grabbedNode), getBounds(parent)))
-                    setParent(this.grabbedNode, parent);
-          }, 1000)
+            parent.emit('expand');
+            updateBoundsTuples();
+            if(boundsOverlap(getBounds(this.grabbedNode), getBounds(parent)))
+              setParent(this.grabbedNode, parent);
+            this.dropTarget = parent;
+            this.dropSibling = sibling;
+            this.grabbedNode.emit('cdndover', [parent, sibling]);
+          }, 1000);
 
-        this.dropTarget = parent;
-        this.dropSibling = sibling;
 
-        this.grabbedNode.emit('cdndover', [parent, sibling]);
       }
 
     }

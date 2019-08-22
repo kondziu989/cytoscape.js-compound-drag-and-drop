@@ -353,12 +353,15 @@ var addListeners = function addListeners() {
 
         _this.dropTargetBounds = getBoundsCopy(parent);
 
-        setParent(_this.grabbedNode, parent);
+        setTimeout(function () {
 
-        _this.dropTarget = parent;
-        _this.dropSibling = sibling;
+          setParent(_this.grabbedNode, parent);
 
-        _this.grabbedNode.emit('cdndover', [parent, sibling]);
+          _this.dropTarget = parent;
+          _this.dropSibling = sibling;
+
+          _this.grabbedNode.emit('cdndover', [parent, sibling]);
+        });
       }
     } else {
       // not in a parent
@@ -392,12 +395,10 @@ var addListeners = function addListeners() {
           _parent.emit('expand');
           updateBoundsTuples();
           if (boundsOverlap(getBounds(_this.grabbedNode), getBounds(_parent))) setParent(_this.grabbedNode, _parent);
+          _this.dropTarget = _parent;
+          _this.dropSibling = _sibling;
+          _this.grabbedNode.emit('cdndover', [_parent, _sibling]);
         }, 1000);
-
-        _this.dropTarget = _parent;
-        _this.dropSibling = _sibling;
-
-        _this.grabbedNode.emit('cdndover', [_parent, _sibling]);
       }
     }
   });
