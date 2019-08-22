@@ -392,7 +392,7 @@ var addListeners = function addListeners() {
         _this.grabbedNode.emit('expand');
         setTimeout(function () {
           updateBoundsTuples();
-          if (boundsOverlap(getBounds(_this.grabbedNode), getBounds(_this.dropTarget))) setParent(_this.grabbedNode, _parent);
+          if (boundsOverlap(getBounds(_this.grabbedNode), getBounds(_parent))) setParent(_this.grabbedNode, _parent);
         }, 1000);
 
         _this.dropTarget = _parent;
