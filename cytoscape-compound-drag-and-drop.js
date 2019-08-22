@@ -372,22 +372,9 @@ var addListeners = function addListeners() {
         return t.node;
       });
 
-      // if( overlappingNodes.length > 0 ){ // potential parent
-      //   // const overlappingParents = overlappingNodes.filter(isParent);
-      //   const overlappingParents = overlappingNodes.filter(isParent);
-      //   let parent, sibling;
-      //
-      //   if( overlappingParents.length > 0 ){
-      //     sibling = cy.collection();
-      //     parent = overlappingParents[0]; // TODO maybe use a metric here to select which one
-      //   } else {
-      //     sibling = overlappingNodes[0]; // TODO maybe use a metric here to select which one
-      //     parent = cy.add( options.newParentNode(this.grabbedNode, sibling) );
-      //   }
-
       if (_overlappingNodes.length > 0) {
         // potential parent
-        // const overlappingParents = overlappingNodes.filter(isParent);
+
         var _parent = void 0,
             _sibling = void 0;
 
@@ -404,7 +391,8 @@ var addListeners = function addListeners() {
         _this.grabbedNode.emit('tap');
         _this.grabbedNode.emit('expand');
         setTimeout(function () {
-          setParent(_this.grabbedNode, _parent);
+          updateBoundsTuples();
+          if (boundsOverlap(getBounds(_this.grabbedNode), getBounds(_this.dropTarget))) setParent(_this.grabbedNode, _parent);
         }, 1000);
 
         _this.dropTarget = _parent;
